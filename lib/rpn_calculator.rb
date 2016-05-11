@@ -1,0 +1,3 @@
+
+class RpmCalculator
+end
