@@ -15,7 +15,11 @@ class RpnCalculator
       add_to_stack(char)
     end
 
-    stack.first
+    stack.last
+  end
+
+  def running_total
+    stack.last
   end
 
   private
