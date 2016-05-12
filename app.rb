@@ -2,6 +2,7 @@
 
 require_relative 'lib/rpn_calculator'
 
+# Accepts user input via gets, interracts with RpmCalculator class
 class App
   def initialize(rpn_calculator: RpnCalculator.new)
     @rpn_calculator = rpn_calculator
