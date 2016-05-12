@@ -65,6 +65,23 @@ describe RpnCalculator do
 
         expect(total).to eq(12.0)
       end
+
+      it 'adds, subtracts, multiplies, and divides' do
+        calculator = RpnCalculator.new
+
+        calculator.evaluate_char('6')
+        calculator.evaluate_char('4')
+        calculator.evaluate_char('5')
+        calculator.evaluate_char('+')
+        calculator.evaluate_char('*')
+        calculator.evaluate_char('25')
+        calculator.evaluate_char('2')
+        calculator.evaluate_char('3')
+        calculator.evaluate_char('+')
+        calculator.evaluate_char('/')
+
+        expect(calculator.evaluate_char('-')).to eq(49.0)
+      end
     end
   end
 end
