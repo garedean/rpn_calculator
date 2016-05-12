@@ -54,6 +54,17 @@ describe RpnCalculator do
 
         expect(total).to eq(3.0)
       end
+
+      it 'multiplies two numbers' do
+        calculator = RpnCalculator.new
+
+        calculator.evaluate_char('3')
+        calculator.evaluate_char('4')
+
+        total = calculator.evaluate_char('*')
+
+        expect(total).to eq(12.0)
+      end
     end
   end
 end
