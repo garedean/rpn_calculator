@@ -5,10 +5,33 @@ describe RpnCalculator do
   describe '#evaluate_char' do
     it 'adds a value to the stack' do
       calculator = RpnCalculator.new
-      total = calculator.evaluate_char('2')
+      total = calculator.evaluate_char('1')
 
-      expect(calculator.running_total).to eq(2.0)
-      expect(total).to eq(2.0)
+      expect(total).to eq(1.0)
+    end
+
+    context 'when evaluating an operator' do
+      it 'prints an error mesage when the stack < 2 elements' do
+        error = 'Invalid character, try again!'
+        logger = spy('Logger', error: error)
+        calculator = RpnCalculator.new(logger: logger)
+
+        calculator.evaluate_char('1')
+        calculator.evaluate_char('+')
+
+        expect(logger).to have_received(:error).with(error)
+      end
+
+      it 'handles addition of two numbers' do
+        calculator = RpnCalculator.new
+
+        calculator.evaluate_char('1')
+        calculator.evaluate_char('2')
+
+        total = calculator.evaluate_char('+')
+
+        expect(total).to eq(3.0)
+      end
     end
   end
 end
