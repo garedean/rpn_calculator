@@ -43,6 +43,17 @@ describe RpnCalculator do
 
         expect(total).to eq(4.0)
       end
+
+      it 'divides one number by another' do
+        calculator = RpnCalculator.new
+
+        calculator.evaluate_char('12')
+        calculator.evaluate_char('4')
+
+        total = calculator.evaluate_char('/')
+
+        expect(total).to eq(3.0)
+      end
     end
   end
 end
