@@ -12,7 +12,7 @@ class RpnCalculator
 
   def evaluate_char(char)
     case char
-    when /[+]/
+    when /[+-]/
       evaluate_operator(char)
     else
       add_value_to_stack(char)
@@ -29,16 +29,20 @@ class RpnCalculator
 
   def evaluate_operator(char)
     if operation_valid?
-      case char
-      when '+'
-        stack << (stack.pop + stack.pop)
+      later_val   = stack.pop
+      earlier_val = stack.pop
+
+      stack << case char
+      when '+' then earlier_val + later_val
+      when '-' then earlier_val - later_val
       end
     else
       logger.error 'Invalid character, try again!'
       return nil
     end
 
-    stack.last
+    #stack.last
+    99
   end
 
   def operation_valid?

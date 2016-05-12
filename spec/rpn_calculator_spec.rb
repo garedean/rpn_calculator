@@ -22,7 +22,7 @@ describe RpnCalculator do
         expect(logger).to have_received(:error).with(error)
       end
 
-      it 'handles addition of two numbers' do
+      it 'adds two numbers' do
         calculator = RpnCalculator.new
 
         calculator.evaluate_char('1')
@@ -31,6 +31,17 @@ describe RpnCalculator do
         total = calculator.evaluate_char('+')
 
         expect(total).to eq(3.0)
+      end
+
+      it 'subtracts one number from another' do
+        calculator = RpnCalculator.new
+
+        calculator.evaluate_char('5')
+        calculator.evaluate_char('1')
+
+        total = calculator.evaluate_char('-')
+
+        expect(total).to eq(4.0)
       end
     end
   end
