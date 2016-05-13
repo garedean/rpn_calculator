@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 require 'stringio'
 require_relative '../app'
@@ -6,7 +7,8 @@ describe App do
   describe '#run' do
     def build_app(simulate_user_input_with:)
       rpn_calculator = double(
-        'Calculator', evaluate_char: simulate_user_input_with)
+        'Calculator', evaluate_char: simulate_user_input_with
+      )
 
       App.new(rpn_calculator: rpn_calculator, logger: nil)
     end

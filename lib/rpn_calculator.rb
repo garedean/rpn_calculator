@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'logger'
 require 'byebug'
 
@@ -29,20 +30,23 @@ class RpnCalculator
 
   def evaluate_operator(char)
     if operation_valid?
-
-      later_val   = stack.pop
-      earlier_val = stack.pop
-
-      stack << case char
-               when '+' then earlier_val + later_val
-               when '-' then earlier_val - later_val
-               when '/' then earlier_val / later_val
-               when '*' then earlier_val * later_val
-               end
+      perform_calculation(char)
     else
       logger.error "Oh no! Using a '#{char}' here doesn't form a valid "\
                    "RPN equation. It's cool, we'll keep it between us..."
     end
+  end
+
+  def perform_calculation(char)
+    later_val   = stack.pop
+    earlier_val = stack.pop
+
+    stack << case char
+             when '+' then earlier_val + later_val
+             when '-' then earlier_val - later_val
+             when '/' then earlier_val / later_val
+             when '*' then earlier_val * later_val
+             end
   end
 
   def operation_valid?
@@ -50,7 +54,9 @@ class RpnCalculator
   end
 
   def numeric?(string)
-    true if Float(string) rescue false
+    true if Float(string)
+  rescue
+    false
   end
 
   def operator?(string)
