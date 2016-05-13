@@ -17,13 +17,13 @@ class App
   def initialize(rpn_calculator:, logger:)
     @rpn_calculator = rpn_calculator
     @logger = logger
+
+    print_directions
   end
 
   def run
-    print_directions
-
-    loop do
-      user_input = STDIN.gets.chomp
+    1.times do
+      user_input = gets.chomp
       exit if user_input == 'q'
 
       puts @rpn_calculator.evaluate_char(user_input)
