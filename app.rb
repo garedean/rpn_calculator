@@ -1,11 +1,22 @@
 #!/usr/bin/env ruby
 
+require 'logger'
 require_relative 'lib/rpn_calculator'
 
-# Accepts user input via gets, interracts with RpmCalculator class
+# Accepts user input via 'gets', interracts with RpnCalculator class
 class App
-  def initialize(rpn_calculator: RpnCalculator.new)
+  def self.build
+    logger = Logger.new($stdout)
+    rpn_calculator = RpnCalculator.new(logger: logger)
+
+    new(rpn_calculator: rpn_calculator, logger: logger)
+  end
+
+  attr_reader :logger
+
+  def initialize(rpn_calculator:, logger:)
     @rpn_calculator = rpn_calculator
+    @logger = logger
   end
 
   def run
@@ -13,9 +24,9 @@ class App
 
     loop do
       user_input = STDIN.gets.chomp
+      exit if user_input == 'q'
 
       puts @rpn_calculator.evaluate_char(user_input)
-      exit if user_input == 'q'
     end
   end
 

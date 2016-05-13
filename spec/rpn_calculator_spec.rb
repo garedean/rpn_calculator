@@ -12,7 +12,7 @@ describe RpnCalculator do
         calculator = RpnCalculator.new(logger: logger)
 
         invalid_inputs.each do |input|
-          result = calculator.evaluate_char(input)
+          calculator.evaluate_char(input)
         end
         expect(logger).to have_received(:error)
           .exactly(invalid_inputs.count).times
@@ -30,7 +30,7 @@ describe RpnCalculator do
 
     context 'when evaluating an operator' do
       it 'prints an error mesage when the stack < 2 elements' do
-        error = "Oh no! Using a '+' right now isn't a valid RPN "\
+        error = "Oh no! Using a '+' here doesn't form a valid RPN "\
                 "equation. It's cool, we'll keep it between us..."
 
         logger = spy('Logger', error: error)

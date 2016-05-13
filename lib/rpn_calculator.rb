@@ -11,10 +11,9 @@ class RpnCalculator
   end
 
   def evaluate_char(char)
-    case
-    when numeric?(char)
+    if numeric?(char)
       add_value_to_stack(char)
-    when operator?(char)
+    elsif operator?(char)
       evaluate_operator(char)
     else
       logger.error "Something's wrong with that input, let's try again."
@@ -41,7 +40,7 @@ class RpnCalculator
                when '*' then earlier_val * later_val
                end
     else
-      logger.error "Oh no! Using a '#{char}' right now isn't a valid "\
+      logger.error "Oh no! Using a '#{char}' here doesn't form a valid "\
                    "RPN equation. It's cool, we'll keep it between us..."
     end
   end
