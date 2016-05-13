@@ -3,16 +3,36 @@ require_relative '../lib/rpn_calculator'
 
 describe RpnCalculator do
   describe '#evaluate_char' do
-    it 'adds a value to the stack' do
-      calculator = RpnCalculator.new
-      total = calculator.evaluate_char('1')
+    context 'when evaluating invalid input' do
+      it 'prints an error message' do
+        invalid_inputs = %w(a A test & ^ % $ #)
+        error  = "Something's wrong with that input, let's try again."
+        logger = spy('Logger', error: error)
 
-      expect(total).to eq(1.0)
+        calculator = RpnCalculator.new(logger: logger)
+
+        invalid_inputs.each do |input|
+          result = calculator.evaluate_char(input)
+        end
+        expect(logger).to have_received(:error)
+          .exactly(invalid_inputs.count).times
+      end
+    end
+
+    context 'when evaluating a numeric value' do
+      it 'adds the value to the stack' do
+        calculator = RpnCalculator.new
+        result = calculator.evaluate_char('1')
+
+        expect(result).to eq(1.0)
+      end
     end
 
     context 'when evaluating an operator' do
       it 'prints an error mesage when the stack < 2 elements' do
-        error = 'Invalid character, try again!'
+        error = "Oh no! Using a '+' right now isn't a valid RPN "\
+                "equation. It's cool, we'll keep it between us..."
+
         logger = spy('Logger', error: error)
         calculator = RpnCalculator.new(logger: logger)
 
@@ -28,9 +48,9 @@ describe RpnCalculator do
         calculator.evaluate_char('1')
         calculator.evaluate_char('2')
 
-        total = calculator.evaluate_char('+')
+        result = calculator.evaluate_char('+')
 
-        expect(total).to eq(3.0)
+        expect(result).to eq(3.0)
       end
 
       it 'subtracts one number from another' do
@@ -39,9 +59,9 @@ describe RpnCalculator do
         calculator.evaluate_char('5')
         calculator.evaluate_char('1')
 
-        total = calculator.evaluate_char('-')
+        result = calculator.evaluate_char('-')
 
-        expect(total).to eq(4.0)
+        expect(result).to eq(4.0)
       end
 
       it 'divides one number by another' do
@@ -50,9 +70,9 @@ describe RpnCalculator do
         calculator.evaluate_char('12')
         calculator.evaluate_char('4')
 
-        total = calculator.evaluate_char('/')
+        result = calculator.evaluate_char('/')
 
-        expect(total).to eq(3.0)
+        expect(result).to eq(3.0)
       end
 
       it 'multiplies two numbers' do
@@ -61,9 +81,9 @@ describe RpnCalculator do
         calculator.evaluate_char('3')
         calculator.evaluate_char('4')
 
-        total = calculator.evaluate_char('*')
+        result = calculator.evaluate_char('*')
 
-        expect(total).to eq(12.0)
+        expect(result).to eq(12.0)
       end
 
       it 'adds, subtracts, multiplies, and divides' do
@@ -79,8 +99,9 @@ describe RpnCalculator do
         calculator.evaluate_char('3')
         calculator.evaluate_char('+')
         calculator.evaluate_char('/')
+        result = calculator.evaluate_char('-')
 
-        expect(calculator.evaluate_char('-')).to eq(49.0)
+        expect(result).to eq(49.0)
       end
     end
   end
