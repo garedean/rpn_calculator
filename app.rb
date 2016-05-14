@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'logger'
+require_relative 'lib/input'
 require_relative 'lib/rpn_calculator'
 
 # Accepts user input via 'gets', interracts with RpnCalculator class
@@ -23,10 +24,10 @@ class App
 
   def run
     loop do
-      user_input = STDIN.gets.chomp
-      exit if user_input == 'q'
+      user_input = Input.new(capture_user_input)
+      exit if user_input.parsed_value == 'q'
 
-      puts @rpn_calculator.evaluate_char(user_input)
+      puts @rpn_calculator.evaluate_user_input(user_input)
     end
   end
 
@@ -36,5 +37,9 @@ class App
     puts 'Welcome! This is a Reverse Polish Calculator. '\
          'Starting typing characters to begin evaluating '\
          'input.'
+  end
+
+  def capture_user_input
+    $stdin.gets.chomp
   end
 end

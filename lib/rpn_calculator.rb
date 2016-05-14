@@ -11,37 +11,39 @@ class RpnCalculator
     @logger = logger
   end
 
-  def evaluate_char(char)
-    if numeric?(char)
-      add_value_to_stack(char)
-    elsif operator?(char)
-      evaluate_operator(char)
+  def evaluate_user_input(user_input)
+    if user_input.numeric?
+      add_value_to_stack(user_input)
+    elsif user_input.operator?
+      evaluate_operator(user_input)
     else
       logger.error "Something's wrong with that input, let's try again."
     end
+
     stack.last
   end
 
   private
 
-  def add_value_to_stack(char)
-    stack.push(char.to_f)
+  def add_value_to_stack(user_input)
+    stack.push(user_input.parsed_value)
   end
 
-  def evaluate_operator(char)
+  def evaluate_operator(user_input)
     if operation_valid?
-      perform_calculation(char)
+      perform_calculation(user_input)
     else
-      logger.error "Oh no! Using a '#{char}' here doesn't form a valid "\
-                   "RPN equation. It's cool, we'll keep it between us..."
+      logger.error "Oh no! Using a '#{user_input.parsed_value}' here "\
+                   "doesn't form a valid RPN equation. It's cool, we'll "\
+                   'keep it between us...'
     end
   end
 
-  def perform_calculation(char)
+  def perform_calculation(user_input)
     later_val   = stack.pop
     earlier_val = stack.pop
 
-    stack << case char
+    stack << case user_input.parsed_value
              when '+' then earlier_val + later_val
              when '-' then earlier_val - later_val
              when '/' then earlier_val / later_val
@@ -51,15 +53,5 @@ class RpnCalculator
 
   def operation_valid?
     stack.count >= 2
-  end
-
-  def numeric?(string)
-    true if Float(string)
-  rescue
-    false
-  end
-
-  def operator?(string)
-    string =~ %r{^[+\-*/]$}
   end
 end

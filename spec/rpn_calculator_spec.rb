@@ -1,9 +1,22 @@
 # frozen_string_literal: true
 require_relative 'spec_helper'
 require_relative '../lib/rpn_calculator'
+require_relative '../lib/input'
 
 describe RpnCalculator do
-  describe '#evaluate_char' do
+  describe '#evaluate_user_input' do
+    def run_rpn_expression(rpn_expression)
+      calculator = RpnCalculator.new
+
+      total = 0
+
+      rpn_expression.each do |v|
+        total = calculator.evaluate_user_input(Input.new(v))
+      end
+
+      total
+    end
+
     context 'when evaluating invalid input' do
       it 'prints an error message' do
         invalid_inputs = %w(a A test & ^ % $ #)
@@ -13,7 +26,7 @@ describe RpnCalculator do
         calculator = RpnCalculator.new(logger: logger)
 
         invalid_inputs.each do |input|
-          calculator.evaluate_char(input)
+          calculator.evaluate_user_input(Input.new(input))
         end
         expect(logger).to have_received(:error)
           .exactly(invalid_inputs.count).times
@@ -23,84 +36,59 @@ describe RpnCalculator do
     context 'when evaluating a numeric value' do
       it 'adds the value to the stack' do
         calculator = RpnCalculator.new
-        result = calculator.evaluate_char('1')
+        result = calculator.evaluate_user_input(Input.new('1'))
 
         expect(result).to eq(1.0)
       end
     end
 
     context 'when evaluating an operator' do
-      it 'prints an error mesage when the stack < 2 elements' do
-        error = "Oh no! Using a '+' here doesn't form a valid RPN "\
-                "equation. It's cool, we'll keep it between us..."
+      it 'calls #error on logger when the stack < 2 elements' do
+        logger_spy = spy('Logger')
+        allow(logger_spy).to receive(:error)
 
-        logger = spy('Logger', error: error)
-        calculator = RpnCalculator.new(logger: logger)
+        input = Input.new('+')
+        RpnCalculator.new(logger: logger_spy).evaluate_user_input(input)
 
-        calculator.evaluate_char('1')
-        calculator.evaluate_char('+')
-
-        expect(logger).to have_received(:error).with(error)
+        expect(logger_spy).to have_received(:error)
       end
 
       it 'adds two numbers' do
-        calculator = RpnCalculator.new
+        rpn_expression = %w( 1 2 + )
 
-        calculator.evaluate_char('1')
-        calculator.evaluate_char('2')
-
-        result = calculator.evaluate_char('+')
+        result = run_rpn_expression(rpn_expression)
 
         expect(result).to eq(3.0)
       end
 
       it 'subtracts one number from another' do
-        calculator = RpnCalculator.new
+        rpn_expression = %w( 5 10 - )
 
-        calculator.evaluate_char('5')
-        calculator.evaluate_char('1')
+        result = run_rpn_expression(rpn_expression)
 
-        result = calculator.evaluate_char('-')
-
-        expect(result).to eq(4.0)
+        expect(result).to eq(-5.0)
       end
 
       it 'divides one number by another' do
-        calculator = RpnCalculator.new
+        rpn_expression = %w( 12 4 / )
 
-        calculator.evaluate_char('12')
-        calculator.evaluate_char('4')
-
-        result = calculator.evaluate_char('/')
+        result = run_rpn_expression(rpn_expression)
 
         expect(result).to eq(3.0)
       end
 
       it 'multiplies two numbers' do
-        calculator = RpnCalculator.new
+        rpn_expression = %w( 3 4 * )
 
-        calculator.evaluate_char('3')
-        calculator.evaluate_char('4')
-
-        result = calculator.evaluate_char('*')
+        result = run_rpn_expression(rpn_expression)
 
         expect(result).to eq(12.0)
       end
 
       it 'adds, subtracts, multiplies, and divides' do
-        calculator = RpnCalculator.new
+        rpn_expression = %w( 6 4 5 + * 25 2 3 + / - )
 
-        calculator.evaluate_char('6')
-        calculator.evaluate_char('4')
-        calculator.evaluate_char('5')
-        calculator.evaluate_char('+')
-        calculator.evaluate_char('*')
-        calculator.evaluate_char('25')
-        calculator.evaluate_char('2')
-        calculator.evaluate_char('3')
-        calculator.evaluate_char('+')
-        calculator.evaluate_char('/')
-        result = calculator.evaluate_char('-')
+        result = run_rpn_expression(rpn_expression)
 
         expect(result).to eq(49.0)
       end
