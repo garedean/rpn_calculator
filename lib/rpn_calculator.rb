@@ -18,20 +18,23 @@ class RpnCalculator
       evaluate_operator(user_input)
     else
       logger.error "Something's wrong with that input, let's try again."
+      return
     end
-
-    stack.last
   end
 
   private
 
   def add_value_to_stack(user_input)
     stack.push(user_input.parsed_value)
+
+    print_last_evaluated_statement
   end
 
   def evaluate_operator(user_input)
     if operation_valid?
       perform_calculation(user_input)
+
+      print_last_evaluated_statement
     else
       logger.error "Oh no! Using a '#{user_input.parsed_value}' here "\
                    "doesn't form a valid RPN equation. It's cool, we'll "\
@@ -53,5 +56,9 @@ class RpnCalculator
 
   def operation_valid?
     stack.count >= 2
+  end
+
+  def print_last_evaluated_statement
+    puts stack.last
   end
 end

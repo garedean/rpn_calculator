@@ -27,7 +27,7 @@ class App
       user_input = Input.new(capture_user_input)
       exit if user_input.parsed_value == 'q'
 
-      puts @rpn_calculator.evaluate_user_input(user_input)
+      @rpn_calculator.evaluate_user_input(user_input)
     end
   end
 
