@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 require 'logger'
-require 'byebug'
 
 # Calculates the running total for a Reverse Polish Notation stream of input
 class RpnCalculator
@@ -18,7 +17,6 @@ class RpnCalculator
       evaluate_operator(user_input)
     else
       logger.error "Something's wrong with that input, let's try again."
-      return
     end
   end
 
@@ -59,6 +57,10 @@ class RpnCalculator
   end
 
   def print_last_evaluated_statement
-    puts stack.last
+    puts pretty_print_float(stack.last)
+  end
+
+  def pretty_print_float(float)
+    sprintf('%g', float)
   end
 end

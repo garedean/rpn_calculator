@@ -8,13 +8,11 @@ describe RpnCalculator do
     def run_rpn_expression(rpn_expression)
       calculator = RpnCalculator.new
 
-      total = 0
-
       rpn_expression.each do |v|
-        total = calculator.evaluate_user_input(Input.new(v))
+        calculator.evaluate_user_input(Input.new(v))
       end
 
-      total
+      calculator.instance_variable_get(:@stack).last
     end
 
     context 'when evaluating invalid input' do
@@ -35,8 +33,8 @@ describe RpnCalculator do
 
     context 'when evaluating a numeric value' do
       it 'adds the value to the stack' do
-        calculator = RpnCalculator.new
-        result = calculator.evaluate_user_input(Input.new('1'))
+        rpn_expression = %w( 1 )
+        result = run_rpn_expression(rpn_expression)
 
         expect(result).to eq(1.0)
       end

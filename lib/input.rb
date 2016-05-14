@@ -21,7 +21,7 @@ class Input
 
   private
 
-  # If user input arrives as an Integer/Float (but as a string),
+  # If user input arrives as a string representing an Integer/Float,
   # convert it to a Float
   def parse_input(terminal_input)
     if float?(terminal_input)
