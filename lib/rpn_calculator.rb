@@ -57,10 +57,10 @@ class RpnCalculator
   end
 
   def print_last_evaluated_statement
-    puts pretty_print_float(stack.last)
+    puts pretty_print_result(stack.last)
   end
 
-  def pretty_print_float(float)
-    sprintf('%g', float)
+  def pretty_print_result(float)
+    "=> #{sprintf('%g', float)}"
   end
 end
