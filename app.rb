@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 # frozen_string_literal: true
 
 require 'logger'
@@ -23,8 +22,8 @@ class App
   end
 
   def run
-    1.times do
-      user_input = gets.chomp
+    loop do
+      user_input = STDIN.gets.chomp
       exit if user_input == 'q'
 
       puts @rpn_calculator.evaluate_char(user_input)

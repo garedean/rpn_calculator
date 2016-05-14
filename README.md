@@ -4,13 +4,17 @@ Reverse Polish Notation (RPN) is a mathematical notation where the operator foll
 
 The following video provides a great overview of how an RPN calculator works: [https://youtu.be/7ha78yWRDlE](https://youtu.be/7ha78yWRDlE)  
 
+This program implements a basic RPN Calculator. As a user types numbers and operators into the terminal, the result is evaluated.
+
 # Setup
 
 1. Clone this repository to your local machine: ```git clone https://github.com/garedean/rpn_calculator.git```
 
 2. Navigate to the rpn_calculator root directory
 
-3. To start the program, run the following Rake command in your terminal: ```rake app:run```.
+3. Install program dependencies by entering the following in your terminal: ```bundle install```
+
+4. To start the program, run the following Rake command in your terminal: ```rake app:run```.
 
 # The MIT License (MIT)
 
