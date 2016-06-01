@@ -39,7 +39,8 @@ class App
          "followed by hitting the 'Enter' key. Valid inputs are "\
          "any positive or negative number, including decimals, or "\
          "the following operators: '+', '-', '*', '/'. Here's an "\
-         "example RPN expression to get you started: 1 2 3 4 5 + × - /"
+         "example RPN expression to get you started: 1 2 3 4 5 + * - "\
+         "(reminder: each character should be on its own line)."
   end
 
   def capture_user_input
